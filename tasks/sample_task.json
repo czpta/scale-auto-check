@@ -1,0 +1,357 @@
+{
+    "task_id": "123f5ab1cbabc",
+    "created_at": "2020-07-18T04:49:30.421Z",
+    "completed_at": "2020-07-18T06:12:06.802Z",
+    "callback_url": "https://example.com/callback",
+    "type": "annotation",
+    "status": "completed",
+    "instruction": "Draw a tight box around each object.",
+    "params": {
+        "attachment": "https://myurl.s3-us-east-1.amazonaws.com/traffic_sign_7.jpg",
+        "attachment_type": "image",
+        "objects_to_annotate": [
+            "traffic_control_sign",
+            "construction_sign",
+            "information_sign",
+            "policy_sign",
+            "non_visible_face"
+        ],
+        "with_labels": true,
+        "min_width": 0,
+        "min_height": 0,
+        "examples": [],
+        "annotation_attributes": {
+            "occlusion": {
+                "description": "What percent of the object is occluded?",
+                "choices": [
+                    "0%",
+                    "25%",
+                    "50%",
+                    "75%",
+                    "100%"
+                ]
+            },
+            "truncation": {
+                "description": "What percent of the object is truncated?",
+                "choices": [
+                    "0%",
+                    "25%",
+                    "50%",
+                    "75%",
+                    "100%"
+                ]
+            },
+            "background_color": {
+                "description": "What color is the background of the sign?",
+                "choices": [
+                    "white",
+                    "red",
+                    "orange",
+                    "yellow",
+                    "green",
+                    "blue",
+                    "other",
+                    "not_applicable"
+                ]
+            }
+        }
+    },
+    "is_test": false,
+    "urgency": "standard",
+    "metadata": {},
+    "callback_succeeded": false,
+    "processed_attachments": [],
+    "project": "Traffic Sign Detection",
+    "customer_review_status": "rejected",
+    "customer_review_comments": [
+        "road closed/pedestrian sign",
+        "Possibly missed a label with non visible face. It's hard to say, but better to flag and be sure",
+        "Possibly missed a label with non visible face (in front of cone). It's hard to say, but better to flag and be sure"
+    ],
+    "prior_responses": [],
+    "response": {
+        "annotations": [
+            {
+                "label": "non_visible_face",
+                "attributes": {
+                    "occlusion": "0%",
+                    "truncation": "0%",
+                    "background_color": "not_applicable"
+                },
+                "uuid": "cfe6cdc9-1d7f-44f8-93a5-0dfa3d4bcd95",
+                "width": 23,
+                "height": 71,
+                "geometry": "box",
+                "left": 2182,
+                "top": 226
+            },
+            {
+                "label": "traffic_control_sign",
+                "attributes": {
+                    "occlusion": "0%",
+                    "truncation": "0%",
+                    "background_color": "blue"
+                },
+                "uuid": "80d5d8f9-82f5-4369-87cf-78f0fd846e21",
+                "width": 137,
+                "height": 123,
+                "geometry": "box",
+                "left": 2305,
+                "top": 27
+            },
+            {
+                "label": "policy_sign",
+                "attributes": {
+                    "occlusion": "0%",
+                    "truncation": "0%",
+                    "background_color": "yellow"
+                },
+                "uuid": "879a6a14-a842-4d4d-b8a0-69e29720ec46",
+                "width": 79,
+                "height": 117,
+                "geometry": "box",
+                "left": 1280,
+                "top": 341
+            },
+            {
+                "label": "non_visible_face",
+                "attributes": {
+                    "occlusion": "50%",
+                    "truncation": "0%",
+                    "background_color": "not_applicable"
+                },
+                "uuid": "c4e5748f-0886-40a6-b819-ab4ce1ea81f8",
+                "width": 177,
+                "height": 144,
+                "geometry": "box",
+                "left": 702,
+                "top": 442
+            },
+            {
+                "label": "non_visible_face",
+                "attributes": {
+                    "occlusion": "25%",
+                    "truncation": "0%",
+                    "background_color": "not_applicable"
+                },
+                "uuid": "e78b5101-4ec2-420a-a727-8ecbebb26a16",
+                "width": 140,
+                "height": 131,
+                "geometry": "box",
+                "left": 715,
+                "top": 316
+            },
+            {
+                "label": "information_sign",
+                "attributes": {
+                    "occlusion": "0%",
+                    "truncation": "0%",
+                    "background_color": "white"
+                },
+                "uuid": "fcc605e8-7f32-419d-a0e4-835304d6b200",
+                "width": 11,
+                "height": 22,
+                "geometry": "box",
+                "left": 1329,
+                "top": 330
+            },
+            {
+                "label": "non_visible_face",
+                "attributes": {
+                    "occlusion": "0%",
+                    "truncation": "0%",
+                    "background_color": "not_applicable"
+                },
+                "uuid": "95177d50-489e-4322-9d2e-15e288a187d6",
+                "width": 20,
+                "height": 18,
+                "geometry": "box",
+                "left": 1154,
+                "top": 302
+            },
+            {
+                "label": "non_visible_face",
+                "attributes": {
+                    "occlusion": "0%",
+                    "truncation": "0%",
+                    "background_color": "not_applicable"
+                },
+                "uuid": "258b3310-d438-4dc0-a0fc-6978679d6232",
+                "width": 9,
+                "height": 10,
+                "geometry": "box",
+                "left": 1160,
+                "top": 322
+            },
+            {
+                "label": "policy_sign",
+                "attributes": {
+                    "occlusion": "0%",
+                    "truncation": "0%",
+                    "background_color": "white"
+                },
+                "uuid": "0030ab4f-8b05-4ea0-b1d9-204a379d3409",
+                "width": 6,
+                "height": 14,
+                "geometry": "box",
+                "left": 1239,
+                "top": 319
+            },
+            {
+                "label": "policy_sign",
+                "attributes": {
+                    "occlusion": "0%",
+                    "truncation": "0%",
+                    "background_color": "white"
+                },
+                "uuid": "68db80c5-a557-4ff1-a8ca-8f38deb29a94",
+                "width": 19,
+                "height": 24,
+                "geometry": "box",
+                "left": 1672,
+                "top": 315
+            },
+            {
+                "label": "policy_sign",
+                "attributes": {
+                    "occlusion": "0%",
+                    "truncation": "0%",
+                    "background_color": "white"
+                },
+                "uuid": "63c2ba36-e218-4874-bb29-ba1e1cf11b42",
+                "width": 20,
+                "height": 18,
+                "geometry": "box",
+                "left": 1671,
+                "top": 295
+            },
+            {
+                "label": "policy_sign",
+                "attributes": {
+                    "occlusion": "0%",
+                    "truncation": "0%",
+                    "background_color": "white"
+                },
+                "uuid": "b124ea9b-898f-4370-9e2d-a3044b54e8e0",
+                "width": 14,
+                "height": 12,
+                "geometry": "box",
+                "left": 1557,
+                "top": 299
+            },
+            {
+                "label": "policy_sign",
+                "attributes": {
+                    "occlusion": "50%",
+                    "truncation": "0%",
+                    "background_color": "white"
+                },
+                "uuid": "3fb2176f-3801-408e-aa22-76519f8dcb91",
+                "width": 13,
+                "height": 15,
+                "geometry": "box",
+                "left": 1558,
+                "top": 312
+            },
+            {
+                "label": "traffic_control_sign",
+                "attributes": {
+                    "occlusion": "0%",
+                    "truncation": "0%",
+                    "background_color": "red"
+                },
+                "uuid": "c46a8006-591d-483d-a375-983b02b158a9",
+                "width": 12,
+                "height": 13,
+                "geometry": "box",
+                "left": 1456,
+                "top": 315
+            },
+            {
+                "label": "non_visible_face",
+                "attributes": {
+                    "occlusion": "25%",
+                    "truncation": "0%",
+                    "background_color": "not_applicable"
+                },
+                "uuid": "be566b34-b162-405c-b486-7ed2b038a041",
+                "width": 53,
+                "height": 63,
+                "geometry": "box",
+                "left": 592,
+                "top": 295
+            },
+            {
+                "label": "information_sign",
+                "attributes": {
+                    "occlusion": "0%",
+                    "truncation": "0%",
+                    "background_color": "yellow"
+                },
+                "uuid": "f631300f-5a36-4e2a-a093-eb3f4d911577",
+                "width": 26,
+                "height": 56,
+                "geometry": "box",
+                "left": 213,
+                "top": 296
+            },
+            {
+                "label": "information_sign",
+                "attributes": {
+                    "occlusion": "0%",
+                    "truncation": "0%",
+                    "background_color": "yellow"
+                },
+                "uuid": "39d634f5-df0e-4ef6-b327-06d467d68e64",
+                "width": 23,
+                "height": 61,
+                "geometry": "box",
+                "left": 223,
+                "top": 233
+            },
+            {
+                "label": "traffic_control_sign",
+                "attributes": {
+                    "occlusion": "0%",
+                    "truncation": "0%",
+                    "background_color": "red"
+                },
+                "uuid": "02d596ed-dfc2-4b3c-aafd-9f309c7ef248",
+                "width": 82,
+                "height": 29,
+                "geometry": "box",
+                "left": 2340,
+                "top": 159
+            }
+        ],
+        "is_customer_fix": false
+    },
+    "customer_reviewed_by": "example-email@email.com",
+    "customer_audit_time_secs": 45.721,
+    "customer_audited_at": "2020-11-20T01:01:36.147Z",
+    "audits": [
+        {
+            "audited_by": "example-email@email.com",
+            "audited_at": "2020-11-20T01:01:36.147Z",
+            "audit_time_secs": 45.721,
+            "audit_result": "rejected",
+            "audit_source": "customer"
+        },
+        {
+            "audited_by": "example-email@email.com",
+            "audited_at": "2020-11-20T01:00:50.096Z",
+            "audit_time_secs": 97.394,
+            "audit_result": "rejected",
+            "audit_source": "customer"
+        },
+        {
+            "audited_by": "example-email@email.com",
+            "audited_at": "2020-11-19T04:20:33.157Z",
+            "audit_time_secs": 58.76,
+            "audit_result": "rejected",
+            "audit_source": "customer"
+        }
+    ],
+    "updated_at": "2021-01-07T19:14:33.503Z",
+    "work_started": true
+}
