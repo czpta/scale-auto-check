@@ -8,7 +8,6 @@ from PIL import Image
 from loguru import logger
 
 # Project setup
-client = scaleapi.ScaleClient('API_TOKEN')
 headers = {"Authorization": "Basic BASIC_TOKEN"}
 
 
@@ -33,17 +32,13 @@ def retrieve_images(f, task_id):
 
 # Check 1: Task has a bounding box that takes up the
 # entire image (bounding box size > x percent of the image size)
-def check_1(task_json, image_file):
+def check_1(task_json, image_file, output):
   # Get image and check out its size
   image_size = image_file.size
   image_width = image_size[0]
   image_height = image_size[1]
   # Create output format
   rows_list = []
-  # output = pandas.DataFrame({'task_id': [],
-  #                       'uuid': [],
-  #                       'violation': [],
-  #                       'description': []})
   # Get box width + height
   for box_size in task_json['response']['annotations']:
     width_percentage = 1
@@ -54,24 +49,23 @@ def check_1(task_json, image_file):
     # See if box height equal to or greater than 80% of image height
     box_height = box_size['height']
     height_percentage = 100 * float(box_height) / float(image_height)
-    if width_percentage > 80 or height_percentage < 80:
-      check_1_dict = {}
-      check_1_dict.update({'task_id': task_json['task_id'],
+
+    if width_percentage > 80 or height_percentage > 80:
+      added_row = pandas.Series({'task_id': task_json['task_id'],
                         'uuid': box_size['uuid'],
                         'violation': 'Check 1',
-                        'description': 'Task has a bounding box that takes up the entire image'})
-      rows_list.append(check_1_dict)
-      # output.append(output_append, ignore_index=True)
-    if not rows_list:
-      check_1_dict = {}
-      check_1_dict.update({'task_id': [task_json['task_id']],
-                        'uuid': [box_size['uuid']],
-                        'violation': ['Success'],
-                        'description': ['The task has passed check 1']})
-      rows_list.append(check_1_dict)    
+                        'description': 'Task has a bounding box that takes up the entire image'}, index=output.columns)
+      output = output.append(added_row, ignore_index=True)
+    
+    if task_json['task_id'] not in output['task_id']:
+      added_row = pandas.Series({'task_id': task_json['task_id'],
+                        'uuid': box_size['uuid'],
+                        'violation': 'Success',
+                        'description': 'The task has passed check 1'}, index=output.columns)
+      output = output.append(added_row, ignore_index=True)    
   
   # output.append(output_append, ignore_index=True)
-  return(rows_list)
+  return(output)
 
 
 # Check 2: Signs don't overlap by 80% or more
@@ -115,13 +109,13 @@ def submit_task_list(task_list):
     retrieved_image = retrieve_images(task, task_id[1][0])
     opened_image = Image.open(retrieved_image)
     # Perform checks on the image + task object for a given task
-    check_1_rows = check_1(task, opened_image)
+    check_1_rows = check_1(task, opened_image, output)
     final_rows.append(check_1_rows)
     check_2(task, opened_image)
     check_3(task, opened_image)
 
-    output = pandas.DataFrame(final_rows)
-    
+    output = check_1_rows
+  # output.columns = ['task_id', 'uuid', 'violation', 'description']
   output.to_csv('output/check1.csv')
 
 
