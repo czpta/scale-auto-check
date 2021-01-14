@@ -37,8 +37,7 @@ def check_1(task_json, image_file, output):
   image_size = image_file.size
   image_width = image_size[0]
   image_height = image_size[1]
-  # Create output format
-  rows_list = []
+  
   # Get box width + height
   for box_size in task_json['response']['annotations']:
     width_percentage = 1
@@ -56,24 +55,66 @@ def check_1(task_json, image_file, output):
                         'violation': 'Check 1',
                         'description': 'Task has a bounding box that takes up the entire image'}, index=output.columns)
       output = output.append(added_row, ignore_index=True)
-    
-    if task_json['task_id'] not in output['task_id']:
+    else:
       added_row = pandas.Series({'task_id': task_json['task_id'],
                         'uuid': box_size['uuid'],
                         'violation': 'Success',
                         'description': 'The task has passed check 1'}, index=output.columns)
       output = output.append(added_row, ignore_index=True)    
   
-  # output.append(output_append, ignore_index=True)
   return(output)
 
 
+# Calculates the percentage of how much two boxes overlap each other
+def overlapping_percentage(box1, box2):
+  # Find coords for both boxes
+  x1 = max(box1['left'], box2['left'])
+  y1 = max(box1['left'], box2['top'])
+  x2 = min(box1['left']+box1['width'], box2['left']+box2['width'])
+  y2 = min(box1['top']+box1['height'], box2['top']+box2['height'])
+
+  # Calculate the area where the boxes cross each other
+  cross_section = (x2 - x1 + 1) * (y2 - y1 + 1)
+
+  # Calculate the area of both boxes
+  box1_area = (box1['width'] + 1) * (box1['height'] + 1)
+  box2_area = (box2['width'] + 1) * (box2['height'] + 1)
+
+  # Calculate percentage by dividing cross_section by sum of
+  # both areas minus the cross_section
+  percentage = cross_section / float(box1_area + box2_area - cross_section)
+
+  return(percentage)
+
+
+# Determines if two boxes overlap
+def overlapping_checker(box1, box2):
+  return not (
+        ((box1['top'] + box1['height']) < (box2['top'])) or
+        (box1['top'] > (box2['top'] + box2['height'])) or
+        ((box1['left'] + box1['width']) < box2['left']) or
+        (box1['left'] > (box1['left'] + box2['width']))
+    )
+
 # Check 2: Signs don't overlap by 80% or more
-def check_2(task_json, image_file):
-  # Get x2, x1 calculation to see where box is horizontally
-  # Get y1, y2 calculation to see where box is vertically 
-  # Do math to get list of overlapping boxes
-  # For each overlapping box, calculate percentage of overlap
+def check_2(task_json):
+  overlapping_box_list = []
+
+  # Generate list of boxes that overlap each other
+  for i, current_box in enumerate(task_json['response']['annotations']):
+    previous_box = task_json['response']['annotations'][i-1] if i > 0 else None
+    if previous_box is not None:
+      if overlapping_checker(previous_box, current_box) == True:
+        overlapping_box_list.append(current_box)
+  
+  # Get the percentage of how much the boxes overlap
+  for i, current_box in enumerate(overlapping_box_list):
+    previous_box = overlapping_box_list[i-1] if i > 0 else None
+    if previous_box is not None:
+      # if box overlapping percentage > .8, log it
+      if overlapping_percentage(previous_box, current_box) > .8:
+        # Log
+  
   print("2")
 
 
@@ -96,7 +137,6 @@ def submit_task_list(task_list):
                         'violation': [],
                         'description': []})
   final_rows = []
-  # rows_list = ['task_id', 'uuid', 'violation', 'description']
 
   # Go through list in loop
   for task_id in csv.iterrows():
@@ -111,7 +151,7 @@ def submit_task_list(task_list):
     # Perform checks on the image + task object for a given task
     check_1_rows = check_1(task, opened_image, output)
     final_rows.append(check_1_rows)
-    check_2(task, opened_image)
+    check_2(task)
     check_3(task, opened_image)
 
     output = check_1_rows
