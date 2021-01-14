@@ -4,6 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+pillow = "*"
+PIL = {Image = "*"}
+pandas = "*"
+json = "*"
+loguru = {logger = "*"}
 
 [dev-packages]
 lzma-dev = "*"

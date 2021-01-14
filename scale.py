@@ -1,7 +1,7 @@
-import scaleapi
+# import scaleapi # not in use
 import requests
 import urllib.request
-import click
+# import click # not in use 
 import pandas
 import json
 from PIL import Image
@@ -149,7 +149,9 @@ def submit_task_list(task_list):
     check_2_rows = check_2(task, output)
 
   check_1_rows.to_csv('output/check1.csv')
+  loguru.success("Output Check 1 to output/check1.csv")
   check_2_rows.to_csv('output/check2.csv')
+  loguru.success("Output Check 2 to output/check2.csv")
 
 
 # Main function
