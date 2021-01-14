@@ -97,7 +97,7 @@ def overlapping_checker(box1, box2):
     )
 
 # Check 2: Signs don't overlap by 80% or more
-def check_2(task_json):
+def check_2(task_json, output):
   overlapping_box_list = []
 
   # Generate list of boxes that overlap each other
@@ -113,18 +113,15 @@ def check_2(task_json):
     if previous_box is not None:
       # if box overlapping percentage > .8, log it
       if overlapping_percentage(previous_box, current_box) > .8:
-        # Log
+        percentage_string = "{:.0%}".format(overlapping_percentage(previous_box, current_box))
+        description_string = 'Box is overlapping box ' + previous_box['uuid'] + ' by ' + percentage_string
+        added_row = pandas.Series({'task_id': task_json['task_id'],
+                        'uuid': current_box['uuid'],
+                        'violation': 'Check 2',
+                        'description': description_string}, index=output.columns)
+        output = output.append(added_row, ignore_index=True)
   
-  print("2")
-
-
-# Check 3: Greater than 4 signs in one small area
-def check_3(task_json, image_file):
-  # Get list of all supersmall boxes
-  # Find the ones within 6 pixels distance from each other
-  # If one of the boxes has more than 4 related boxes to it,
-  # then there are too many boxes in one small area
-  print("3")
+  return(output)
 
 
 # Goes through given list of tasks and goes about retrieving them
@@ -136,7 +133,6 @@ def submit_task_list(task_list):
                         'uuid': [],
                         'violation': [],
                         'description': []})
-  final_rows = []
 
   # Go through list in loop
   for task_id in csv.iterrows():
@@ -150,13 +146,10 @@ def submit_task_list(task_list):
     opened_image = Image.open(retrieved_image)
     # Perform checks on the image + task object for a given task
     check_1_rows = check_1(task, opened_image, output)
-    final_rows.append(check_1_rows)
-    check_2(task)
-    check_3(task, opened_image)
+    check_2_rows = check_2(task, output)
 
-    output = check_1_rows
-  # output.columns = ['task_id', 'uuid', 'violation', 'description']
-  output.to_csv('output/check1.csv')
+  check_1_rows.to_csv('output/check1.csv')
+  check_2_rows.to_csv('output/check2.csv')
 
 
 # Main function
